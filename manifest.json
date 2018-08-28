@@ -1,0 +1,10 @@
+{
+  "name": "Apiary",
+  "description": "Fair fundraisng app",
+  "icons": [{
+    "src": "images/icon.png",
+    "sizes": "192x192"
+  }],
+  "start_url": "/index.html",
+  "script": "/script.js"
+}

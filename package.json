@@ -1,0 +1,31 @@
+{
+  "name": "apiary",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "@aragon/apps-token-manager": "^1.0.0",
+    "@aragon/apps-voting": "^1.0.0",
+    "@aragon/os": "3.1.9"
+  },
+  "devDependencies": {
+    "@aragon/cli": "^4.0.6",
+    "@aragon/react-scripts": "^1.1.0-aragon.6",
+    "eth-gas-reporter": "^0.1.1",
+    "ganache-cli": "^6.1.0",
+    "solidity-coverage": "0.4.3",
+    "solium": "^1.0.4",
+    "truffle": "4.0.5",
+    "truffle-hdwallet-provider": "0.0.3",
+    "webpack": "3.10.0"
+  },
+  "scripts": {
+    "postinstall": "cd app && npm install",
+    "run:kit": "aragon run --kit Kit --kit-init @ARAGON_ENS --files app/public",
+    "start": "aragon run",
+    "test": "aragon contracts test",
+    "compile": "aragon contracts compile",
+    "publish": "aragon publish"
+  },
+  "keywords": [],
+  "license": "GPL-3.0"
+}

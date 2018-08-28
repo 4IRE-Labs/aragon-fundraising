@@ -1,0 +1,12 @@
+{
+  "appName": "apiary.aragonpm.eth",
+  "version": "1.0.0",
+  "roles": [
+    {
+      "name": "Create campaign",
+      "id": "CREATE_CAMPAIGN",
+      "params": []
+    }
+  ],
+  "path": "contracts/ApiaryApp.sol"
+}

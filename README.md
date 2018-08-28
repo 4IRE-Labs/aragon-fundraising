@@ -5,8 +5,6 @@
 
 Aragon app based on React Kit
 
-This boilerplate also includes a fully working example app, complete with a background worker and a front-end in React (with Aragon UI).
-
 ## Install
 
 ```sh

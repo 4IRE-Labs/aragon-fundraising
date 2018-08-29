@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import {
   AragonApp,
@@ -9,8 +10,14 @@ import {
 } from '@aragon/ui'
 import AppLayout from './components/AppLayout'
 import NewRaiseCampaignPanelContent from './components/Panels/NewRaiseCampaignPanelContent'
+import EmptyState from './screens/EmptyState'
 
 class App extends React.Component {
+  static propTypes = {
+    app: PropTypes.object.isRequired,
+  };
+  static defaultProps = {
+  };
   state = {
     newRaiseConfig: {},
     sidepanelOpened: false,
@@ -32,7 +39,9 @@ class App extends React.Component {
     })
   };
 
-  handleNewRaise = ({  }) => {
+  handleNewRaise = ({ title, minEth, maxEth, startDate, endDate }) => {
+    const { app } = this.props;
+    app.createCampaign(title, Date.now(), Date.now() + 3600);
     this.handleSidepanelClose()
   };
 
@@ -61,6 +70,11 @@ class App extends React.Component {
               }
             />
           </AppLayout.Header>
+          <AppLayout.ScrollWrapper>
+            <AppLayout.Content>
+                <EmptyState onActivate={this.handleLaunchNewRaise} />
+            </AppLayout.Content>
+          </AppLayout.ScrollWrapper>
         </AppLayout>
         <SidePanel
           title="New Raise Campaign"

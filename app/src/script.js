@@ -1,25 +1,24 @@
 import Aragon from '@aragon/client'
 
-const app = new Aragon()
+const app = new Aragon();
 
 const initialState = {
-  count: 0
-}
+  value: 0
+};
+
 app.store(async (state, event) => {
-  if (state === null) state = initialState
+  if (state === null) state = initialState;
 
   switch (event.event) {
-    case 'Increment':
-      return { count: await getValue() }
-    case 'Decrement':
-      return { count: await getValue() }
+    case 'ProbabilityChanged':
+      return { value: await getValue() };
     default:
       return state
   }
 })
 
 function getValue() {
-  // Get current value from the contract by calling the public getter
+  // Get current value from the contract by calling the pufblic getter
   return new Promise(resolve => {
     app
       .call('value')

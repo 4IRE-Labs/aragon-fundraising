@@ -20,6 +20,7 @@
   },
   "scripts": {
     "postinstall": "cd app && npm install",
+    "build:kit": "cd app && npm run build:kit && cd .. && npm run run:kit",
     "run:kit": "aragon run --kit Kit --kit-init @ARAGON_ENS --files app/public",
     "start": "aragon run",
     "test": "aragon contracts test",

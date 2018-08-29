@@ -1,19 +1,21 @@
 import React from "react";
 import { Button, Field, TextInput, SidePanelSplit, Text, theme } from "@aragon/ui";
 import styled from "styled-components";
+import DatePicker from "react-datepicker";
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const initialState = {
   title: "",
   exchangeRate: 0.1,
   minEth: 0,
   maxEth: 1000,
-  endDate: Date()
+  endDate: moment()
 };
 
 class NewRaiseCampaignPanelContent extends React.Component {
   static defaultProps = {
-    onCreateRaisingCampaign: () => {
-    }
+    onCreateRaisingCampaign: () => { }
   };
 
   constructor(props) {
@@ -41,6 +43,9 @@ class NewRaiseCampaignPanelContent extends React.Component {
   };
   handleMaxEthChange = event => {
     this.setState({ maxEth: event.target.value });
+  };
+  handleEndDateChange = event => {
+    // this.setState({ endDate: event.target.value });
   };
   handleSubmit = event => {
     event.preventDefault();
@@ -112,6 +117,14 @@ class NewRaiseCampaignPanelContent extends React.Component {
                 />
               </Field>
             </SidePanelSplit>
+          </Part>
+          <Part>
+            <Field label="Date">
+              <DatePicker
+                selected={endDate}
+                onChange={this.handleEndDateChange}
+              />
+            </Field>
           </Part>
           <Button mode="strong" type="submit" wide>
             New Raise

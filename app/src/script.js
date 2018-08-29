@@ -1,20 +1,21 @@
 import Aragon from '@aragon/client'
-import { combineLatest } from './rxjs'
-
 const app = new Aragon();
 
 app.store(async (state, { event, returnValues }) => {
+
   let nextState = {
     ...state,
   };
 
   switch (event) {
     case 'StartCampaign':
-      nextState = await startCampaign(nextState, returnValues);
+      nextState = await startCampaign(nextState, returnValues['campaignId']);
       break;
     default:
       break
   }
+
+  console.log("nextState: " + JSON.stringify(nextState));
 
   return nextState
 });
@@ -25,8 +26,20 @@ app.store(async (state, { event, returnValues }) => {
  *                     *
  ***********************/
 
-async function startCampaign(state, { campaignId }) {
-  return updateState(state, campaignId, campaign => campaign)
+async function startCampaign(state, campaignId) {
+
+  const { campaigns = [] } = state;
+  const campaignIndex = campaigns.findIndex(campaign => campaign.id === campaignId);
+
+  if (campaignIndex === -1) {
+    var campaign = await loadCampaign(campaignId);
+    campaigns.push(campaign);
+  }
+
+  return {
+    ...state,
+    campaigns: campaigns
+  }
 }
 
 /***********************
@@ -35,68 +48,25 @@ async function startCampaign(state, { campaignId }) {
  *                     *
  ***********************/
 
-async function loadCampaignDescription(campaign) {
-  return campaign
-}
-
-function loadCampaignData(campaignId) {
+function loadCampaign(campaignId) {
+  console.log("load campaign: " + JSON.stringify(campaignId));
   return new Promise(resolve => {
-    combineLatest(
-      app.call('getCampaign', campaignId),
-      app.call('getCampaignMetadata', campaignId)
-    )
+    app
+      .call("getCampaign", campaignId)
       .first()
-      .subscribe(([campaign, metadata]) => {
-        loadCampaignDescription(campaign).then(campaign => {
-          resolve({
-            ...marshallCampaign(campaign),
-            metadata,
-          })
-        })
-      })
-  })
+      .subscribe(campaign => {
+        resolve(marshallCampaign(campaignId, campaign));
+      });
+  });
 }
 
-async function updateCampaigns(campaigns, campaignId, transform) {
-  const campaignIndex = campaigns.findIndex(campaign => campaign.campaignId === campaignId);
-
-  if (campaignIndex === -1) {
-    // If we can't find it, load its data, perform the transformation, and concat
-    return campaigns.concat(
-      await transform({
-        campaignId,
-        data: await loadCampaignData(campaignId),
-      })
-    )
-  } else {
-    const nextCampaigns = Array.from(campaigns);
-    nextCampaigns[campaignIndex] = await transform(nextCampaigns[campaignIndex]);
-    return nextCampaigns
-  }
-}
-
-async function updateState(state, campaignId, transform) {
-  const { campaigns = [] } = state;
+function marshallCampaign (campaignId, {startDate, endDate, ethRaised, executed, creator}) {
   return {
-    ...state,
-    campaigns: await updateCampaigns(campaigns, campaignId, transform),
-  }
-}
-
-
-// Apply transmations to a campaign received from web3
-function marshallCampaign({
-                            startDate,
-                            endDate,
-                            ethRaised,
-                            executed,
-                            creator
-                      }) {
-  return {
-    startDate: parseInt(startDate, 10) * 1000,
-    endDate: parseInt(endDate, 10) * 1000,
-    ethRaised,
-    executed,
-    creator
+    id: campaignId,
+    startDate: startDate,
+    endDate: endDate,
+    ethRaised: ethRaised,
+    executed: executed,
+    creator: creator
   }
 }

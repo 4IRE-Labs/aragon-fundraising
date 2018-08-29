@@ -18,11 +18,11 @@ class App extends React.Component {
     app: PropTypes.object.isRequired,
   };
   static defaultProps = {
+    campaigns: []
   };
   state = {
     newRaiseConfig: {},
     sidepanelOpened: false,
-    campaigns: []
   };
 
   componentWillReceiveProps(nextProps) {
@@ -51,10 +51,11 @@ class App extends React.Component {
   };
 
   render() {
+    const { campaigns } = this.props;
+
     const {
       newRaiseConfig,
-      sidepanelOpened,
-      campaigns
+      sidepanelOpened
     } = this.state;
 
     return (
@@ -110,3 +111,4 @@ export default observe(
   observable => observable.map(state => ({ ...state })),
   {}
 )(App)
+

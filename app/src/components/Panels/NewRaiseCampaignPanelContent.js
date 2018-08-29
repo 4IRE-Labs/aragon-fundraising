@@ -6,10 +6,10 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const initialState = {
-  title: "",
-  exchangeRate: 0.1,
-  minEth: 0,
-  maxEth: 1000,
+  title: '',
+  tokenPrice: 0.1,
+  target: 100,
+  cap: 1000,
   endDate: moment()
 };
 
@@ -35,14 +35,14 @@ class NewRaiseCampaignPanelContent extends React.Component {
   handleTitleChange = event => {
     this.setState({ title: event.target.value });
   };
-  handleExchangeRateChange = event => {
-    this.setState({ exchangeRate: event.target.value });
+  handleTokenPriceChange = event => {
+    this.setState({ tokenPrice: event.target.value });
   };
-  handleMinEthChange = event => {
-    this.setState({ minEth: event.target.value });
+  handleTargetChange = event => {
+    this.setState({ target: event.target.value });
   };
-  handleMaxEthChange = event => {
-    this.setState({ maxEth: event.target.value });
+  handleCapChange = event => {
+    this.setState({ cap: event.target.value });
   };
   handleEndDateChange = event => {
     // this.setState({ endDate: event.target.value });
@@ -50,14 +50,14 @@ class NewRaiseCampaignPanelContent extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     const {
-      title, exchangeRate, minEth, maxEth, endDate
+      title, tokenPrice, target, cap, endDate
     } = this.state;
 
     this.props.onCreateRaisingCampaign({
       title: title,
-      exchangeRate: exchangeRate,
-      minEth: minEth,
-      maxEth: maxEth,
+      tokenPrice: tokenPrice,
+      target: target,
+      cap: cap,
       endDate: endDate
     });
 
@@ -65,7 +65,7 @@ class NewRaiseCampaignPanelContent extends React.Component {
 
   render() {
     const {
-      title, exchangeRate, minEth, maxEth, endDate
+      title, tokenPrice, target, cap, endDate
     } = this.state;
 
     return (
@@ -82,8 +82,8 @@ class NewRaiseCampaignPanelContent extends React.Component {
             </Field>
             <Field label="PRICE IN ETH">
               <TextInput.Number
-                value={exchangeRate}
-                onChange={this.handleExchangeRateChange}
+                value={tokenPrice}
+                onChange={this.handleTokenPriceChange}
                 min={0}
                 step="any"
                 required
@@ -98,8 +98,8 @@ class NewRaiseCampaignPanelContent extends React.Component {
             <SidePanelSplit>
               <Field label="Minimum (Target) in ETH">
                 <TextInput.Number
-                  value={minEth}
-                  onChange={this.handleMinEthChange}
+                  value={target}
+                  onChange={this.handleTargetChange}
                   min={0.1}
                   step="any"
                   required
@@ -108,8 +108,8 @@ class NewRaiseCampaignPanelContent extends React.Component {
               </Field>
               <Field label="Maximum (Cap) IN ETH">
                 <TextInput.Number
-                  value={maxEth}
-                  onChange={this.handleMaxEthChange}
+                  value={cap}
+                  onChange={this.handleCapChange}
                   min={0.1}
                   step="any"
                   required

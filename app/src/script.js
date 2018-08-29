@@ -1,5 +1,6 @@
 import Aragon from '@aragon/client'
 const app = new Aragon();
+import { combineLatest } from './rxjs'
 
 app.store(async (state, { event, returnValues }) => {
 
@@ -50,23 +51,33 @@ async function startCampaign(state, campaignId) {
 
 function loadCampaign(campaignId) {
   console.log("load campaign: " + JSON.stringify(campaignId));
+
   return new Promise(resolve => {
-    app
-      .call("getCampaign", campaignId)
+    combineLatest(
+      app.call("getCampaign", campaignId),
+      app.call("getCampaignMetadata", campaignId)
+    )
       .first()
-      .subscribe(campaign => {
-        resolve(marshallCampaign(campaignId, campaign));
+      .subscribe(([campaign, metadata]) => {
+        resolve(marshallCampaign(campaignId, campaign, metadata));
       });
   });
 }
 
-function marshallCampaign (campaignId, {startDate, endDate, ethRaised, executed, creator}) {
+function marshallCampaign (campaignId, {title, endDate, tokenPrice, target, cap, ethRaised, executed, creator, availableTokens}, metadata) {
+  console.log("marshall campaign: " + JSON.stringify(metadata));
+
   return {
     id: campaignId,
-    startDate: startDate,
-    endDate: endDate,
-    ethRaised: ethRaised,
     executed: executed,
-    creator: creator
+    endDate: parseInt(endDate, 10) * 1000,
+    title: title,
+    metadata: metadata,
+    ethRaised: ethRaised,
+    creator: creator,
+    target: target,
+    cap: cap,
+    tokenPrice: tokenPrice,
+    availableTokens: availableTokens
   }
 }

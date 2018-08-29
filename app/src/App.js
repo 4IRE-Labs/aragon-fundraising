@@ -44,9 +44,10 @@ class App extends React.Component {
     })
   };
 
-  handleNewRaise = ({ title, minEth, maxEth, startDate, endDate }) => {
+  handleNewRaise = ({ title, endDate, tokenPrice, target, cap  }) => {
     const { app } = this.props;
-    app.createCampaign(title, Date.now(), Date.now() + 3600);
+    //FIXME: add endDate
+    app.createCampaign(title, Date.now() / 1000 + 3600, tokenPrice, target, cap);
     this.handleSidepanelClose()
   };
 

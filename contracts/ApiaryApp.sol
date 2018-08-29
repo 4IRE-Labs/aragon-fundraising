@@ -18,12 +18,16 @@ contract ApiaryApp is AragonApp {
     event StartCampaign(uint256 indexed campaignId);
 
     struct Campaign {
-        string  metadata;
-        uint64  startDate;
-        uint64  endDate;
-        uint256 ethRaised;
         bool    executed;
+        uint64  endDate;
+        string  title;
+        string  metadata;
+        uint256 ethRaised;
         address creator;
+        uint256 target;
+        uint256 cap;
+        uint256 tokenPrice;
+        uint256 availableTokens;
     }
 
     Campaign[] campaigns;
@@ -38,28 +42,32 @@ contract ApiaryApp is AragonApp {
         campaigns.length ++;
     }
 
-    function createCampaign(string _metadata, uint64 _startDate, uint64 _endDate) auth(CREATE_CAMPAIGN) external returns (uint256 campaignId) {
-        require(_startDate > now);
-        require(_endDate > _startDate);
+    function createCampaign(string _title, uint64 _endDate, uint256 _tokenPrice, uint256 _target, uint256 _cap) auth(CREATE_CAMPAIGN) external returns (uint256 campaignId) {
+        require(_endDate > now);
 
         campaignId = campaigns.length++;
         Campaign storage campaign = campaigns[campaignId];
-        campaign.metadata = _metadata;
-        campaign.creator = msg.sender;
-        campaign.startDate = _startDate;
-        campaign.endDate = _endDate;
+        campaign.creator     = msg.sender;
+        campaign.title       = _title;
+        campaign.endDate     = _endDate;
+        campaign.tokenPrice  = _tokenPrice;
+        campaign.target      = _target;
+        campaign.cap         = _cap;
 
         StartCampaign(campaignId);
     }
 
-    function getCampaign(uint256 _campaignId) public view returns (uint64 startDate, uint64 endDate, uint256 ethRaised, bool executed, address creator) {
+    function getCampaign(uint256 _campaignId) public view returns (string title, uint64 endDate, uint256 tokenPrice, uint256 target, uint256 cap, uint256 ethRaised, bool executed, address creator, uint256 availableTokens) {
         Campaign storage campaign = campaigns[_campaignId];
-
-        startDate = campaign.startDate;
-        endDate = campaign.endDate;
-        ethRaised = campaign.ethRaised;
-        executed = campaign.executed;
-        creator = campaign.creator;
+        title           = campaign.title;
+        endDate         = campaign.endDate;
+        tokenPrice      = campaign.tokenPrice;
+        target          = campaign.target;
+        cap             = campaign.cap;
+        ethRaised       = campaign.ethRaised;
+        executed        = campaign.executed;
+        creator         = campaign.creator;
+        availableTokens = campaign.availableTokens;
     }
 
     function getCampaignMetadata(uint256 _campaignId) public view returns (string) {

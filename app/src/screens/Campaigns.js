@@ -26,12 +26,26 @@ class Campaigns extends React.Component {
               </TableRow>
             }
           >
-            {campaigns.map(({ title, exchangeRate, minEth, maxEth, endDate }) => (
+            {campaigns.map(({
+                              id,
+                              executed,
+                              endDate,
+                              title,
+                              metadata,
+                              ethRaised,
+                              creator,
+                              target,
+                              cap,
+                              tokenPrice,
+                              availableTokens,
+                            }) => (
               <CampaignRow
                 title={title}
-                exchangeRate={exchangeRate}
-                minEth={minEth}
-                maxEth={maxEth}
+                exchangeRate={tokenPrice}
+                ethRaised={ethRaised}
+                minEth={target}
+                tokenPrice={tokenPrice}
+                availableTokens={availableTokens}
                 endDate={endDate}
               />
             ))}

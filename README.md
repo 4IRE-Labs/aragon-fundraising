@@ -12,6 +12,19 @@ npm install -g @aragon/cli
 npm install
 cd app && npm install
 ```
+
+## Develop
+
+To rebuild frontend:
+```sh
+cd app && npm run build:app
+```
+
+To rebuild script:
+```sh
+cd app && npm run build:script
+```
+
 ## Run the kit
 
 ```sh

@@ -10,19 +10,21 @@ import {
 class CampaignRow extends React.Component {
   static defaultProps = {
     title: '',
-    exchangeRate: 0.1,
-    minEth: 0.1,
-    maxEth: 100.0,
-    endDate: Date.now()
+    ethRaised: 0,
+    minEth: 0,
+    tokenPrice: 0,
+    availableTokens: 0,
+    endDate: 0
   };
 
   render() {
     const {
       title,
-      exchangeRate,
+      ethRaised,
       minEth,
-      maxEth,
-      endDate,
+      tokenPrice,
+      availableTokens,
+      endDate
     } = this.props;
 
     return (
@@ -34,16 +36,16 @@ class CampaignRow extends React.Component {
           <Text>{title}</Text>
         </TableCell>
         <TableCell>
-          <Text>0 ETH</Text>
+          <Text>{ethRaised} ETH</Text>
         </TableCell>
         <TableCell>
-          <Text>{maxEth} ETH</Text>
+          <Text>{minEth} ETH</Text>
         </TableCell>
         <TableCell>
-          <Text>{exchangeRate}</Text>
+          <Text>{tokenPrice}</Text>
         </TableCell>
         <TableCell>
-          <Text>TBC</Text>
+          <Text>{availableTokens}</Text>
         </TableCell>
       </TableRow>
     )

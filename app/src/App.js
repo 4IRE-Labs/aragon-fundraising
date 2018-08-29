@@ -11,6 +11,7 @@ import {
 import AppLayout from './components/AppLayout'
 import NewRaiseCampaignPanelContent from './components/Panels/NewRaiseCampaignPanelContent'
 import EmptyState from './screens/EmptyState'
+import Campaigns from './screens/Campaigns'
 
 class App extends React.Component {
   static propTypes = {
@@ -21,8 +22,12 @@ class App extends React.Component {
   state = {
     newRaiseConfig: {},
     sidepanelOpened: false,
-    tokenSettingsLoaded: false,
+    campaigns: []
   };
+
+  componentWillReceiveProps(nextProps) {
+
+  }
 
   handleAppBarLaunchNewRaise = () => this.handleLaunchNewRaise();
   handleLaunchNewRaise = () => {
@@ -48,7 +53,8 @@ class App extends React.Component {
   render() {
     const {
       newRaiseConfig,
-      sidepanelOpened
+      sidepanelOpened,
+      campaigns
     } = this.state;
 
     return (
@@ -72,7 +78,7 @@ class App extends React.Component {
           </AppLayout.Header>
           <AppLayout.ScrollWrapper>
             <AppLayout.Content>
-                <EmptyState onActivate={this.handleLaunchNewRaise} />
+              {campaigns.length > 0 ? (<Campaigns campaigns={campaigns} />) : (<EmptyState onActivate={this.handleLaunchNewRaise} />)}
             </AppLayout.Content>
           </AppLayout.ScrollWrapper>
         </AppLayout>

@@ -51,4 +51,18 @@ contract ApiaryApp is AragonApp {
 
         StartCampaign(campaignId);
     }
+
+    function getCampaign(uint256 _campaignId) public view returns (uint64 startDate, uint64 endDate, uint256 ethRaised, bool executed, address creator) {
+        Campaign storage campaign = campaigns[_campaignId];
+
+        startDate = campaign.startDate;
+        endDate = campaign.endDate;
+        ethRaised = campaign.ethRaised;
+        executed = campaign.executed;
+        creator = campaign.creator;
+    }
+
+    function getCampaignMetadata(uint256 _campaignId) public view returns (string) {
+        return campaigns[_campaignId].metadata;
+    }
 }

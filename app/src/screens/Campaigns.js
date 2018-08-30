@@ -9,7 +9,8 @@ class Campaigns extends React.Component {
   };
   render() {
     const {
-      campaigns
+      campaigns,
+      onCampaignDetails
     } = this.props;
 
     return (
@@ -18,11 +19,12 @@ class Campaigns extends React.Component {
             header={
               <TableRow>
                 <TableHeader title="Time Remaining" />
-                <TableHeader title="Raise Name" align="right" />
+                <TableHeader title="Raise Name" />
                 <TableHeader title="Amount Raised" />
                 <TableHeader title="Target" />
                 <TableHeader title="Token Price" />
                 <TableHeader title="Available Tokens" />
+                <TableHeader title="Actions" />
               </TableRow>
             }
           >
@@ -40,6 +42,7 @@ class Campaigns extends React.Component {
                               availableTokens,
                             }) => (
               <CampaignRow
+                campaignId={id}
                 title={title}
                 exchangeRate={tokenPrice}
                 ethRaised={ethRaised}
@@ -47,6 +50,7 @@ class Campaigns extends React.Component {
                 tokenPrice={tokenPrice}
                 availableTokens={availableTokens}
                 endDate={endDate}
+                onCampaignDetails={onCampaignDetails}
               />
             ))}
           </Table>

@@ -4,8 +4,15 @@ import "@aragon/os/contracts/apps/AragonApp.sol";
 import "@aragon/os/contracts/lib/minime/MiniMeToken.sol";
 import "@aragon/os/contracts/lib/zeppelin/math/SafeMath.sol";
 import "@aragon/os/contracts/lib/zeppelin/math/SafeMath64.sol";
+import "./Campaign.sol";
 
 contract ApiaryApp is AragonApp {
+
+    struct CampaignStruct {
+        Campaign campaign;
+        string title;
+        string metadata;
+    }
 
     /// Libs
     using SafeMath for uint256;
@@ -17,20 +24,7 @@ contract ApiaryApp is AragonApp {
     /// Events
     event StartCampaign(uint256 indexed campaignId);
 
-    struct Campaign {
-        bool    executed;
-        uint64  endDate;
-        string  title;
-        string  metadata;
-        uint256 ethRaised;
-        address creator;
-        uint256 target;
-        uint256 cap;
-        uint256 tokenPrice;
-        uint256 availableTokens;
-    }
-
-    Campaign[] campaigns;
+    CampaignStruct[] campaigns;
     MiniMeToken public token;
 
     function initialize(
@@ -46,31 +40,42 @@ contract ApiaryApp is AragonApp {
         require(_endDate > now);
 
         campaignId = campaigns.length++;
-        Campaign storage campaign = campaigns[campaignId];
-        campaign.creator     = msg.sender;
-        campaign.title       = _title;
-        campaign.endDate     = _endDate;
-        campaign.tokenPrice  = _tokenPrice;
-        campaign.target      = _target;
-        campaign.cap         = _cap;
+        CampaignStruct storage campaignStruct = campaigns[campaignId];
+        Campaign campaign = new Campaign(
+            token,
+            _title,
+            _endDate,
+            _tokenPrice,
+            _target,
+            _cap,
+            campaignId
+        );
+
+        campaignStruct.campaign = campaign;
+        campaignStruct.title = _title;
 
         StartCampaign(campaignId);
     }
 
-    function getCampaign(uint256 _campaignId) public view returns (string title, uint64 endDate, uint256 tokenPrice, uint256 target, uint256 cap, uint256 ethRaised, bool executed, address creator, uint256 availableTokens) {
-        Campaign storage campaign = campaigns[_campaignId];
-        title           = campaign.title;
-        endDate         = campaign.endDate;
-        tokenPrice      = campaign.tokenPrice;
-        target          = campaign.target;
-        cap             = campaign.cap;
-        ethRaised       = campaign.ethRaised;
-        executed        = campaign.executed;
-        creator         = campaign.creator;
-        availableTokens = campaign.availableTokens;
+    function getCampaign(uint256 _campaignId) public view returns (string title, uint64 endDate, uint256 tokenPrice, uint256 target, uint256 cap, uint256 ethRaised, bool executed, address creator, uint256 availableTokens, address campaignAddress) {
+
+        CampaignStruct storage campaignStruct = campaigns[_campaignId];
+        Campaign campaign = Campaign(campaignStruct.campaign);
+
+        title           = campaignStruct.title;
+        endDate         = campaign.endDate();
+        tokenPrice      = campaign.tokenPrice();
+        target          = campaign.target();
+        cap             = campaign.cap();
+        ethRaised       = campaign.ethRaised();
+        executed        = campaign.executed();
+        creator         = campaign.creator();
+        availableTokens = campaign.availableTokens();
+        campaignAddress = campaign;
     }
 
     function getCampaignMetadata(uint256 _campaignId) public view returns (string) {
-        return campaigns[_campaignId].metadata;
+        CampaignStruct storage campaignStruct = campaigns[_campaignId];
+        return campaignStruct.metadata;
     }
 }

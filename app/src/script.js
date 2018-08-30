@@ -58,13 +58,13 @@ function loadCampaign(campaignId) {
       app.call("getCampaignMetadata", campaignId)
     )
       .first()
-      .subscribe(([campaign, metadata]) => {
+      .subscribe(([campaign, title, metadata]) => {
         resolve(marshallCampaign(campaignId, campaign, metadata));
       });
   });
 }
 
-function marshallCampaign (campaignId, {title, endDate, tokenPrice, target, cap, ethRaised, executed, creator, availableTokens}, metadata) {
+function marshallCampaign (campaignId, {title, endDate, tokenPrice, target, cap, ethRaised, executed, creator, availableTokens, campaignAddress}, metadata) {
   console.log("marshall campaign: " + JSON.stringify(metadata));
 
   return {
@@ -78,6 +78,7 @@ function marshallCampaign (campaignId, {title, endDate, tokenPrice, target, cap,
     target: target,
     cap: cap,
     tokenPrice: tokenPrice,
-    availableTokens: availableTokens
+    availableTokens: availableTokens,
+    campaignAddress: campaignAddress
   }
 }

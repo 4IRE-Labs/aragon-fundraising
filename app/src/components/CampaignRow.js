@@ -4,19 +4,27 @@ import {
   TableRow,
   TableCell,
   Text,
-  Countdown
+  Countdown,
+  IconSettings,
+  ContextMenu,
+  ContextMenuItem
 } from '@aragon/ui'
 
 class CampaignRow extends React.Component {
   static defaultProps = {
+    campaignId: 0,
     title: '',
     ethRaised: 0,
     minEth: 0,
     tokenPrice: 0,
     availableTokens: 0,
-    endDate: 0
+    endDate: 0,
+    onCampaignDetails: () => {},
   };
-
+  handleCampaignDetails = () => {
+    const { campaignId, onCampaignDetails } = this.props;
+    onCampaignDetails(campaignId);
+  };
   render() {
     const {
       title,
@@ -47,9 +55,21 @@ class CampaignRow extends React.Component {
         <TableCell>
           <Text>{availableTokens}</Text>
         </TableCell>
+        <TableCell>
+          <ContextMenu>
+            <ContextMenuItem onClick={this.handleCampaignDetails}>
+              <IconSettings />
+              <ActionLabel>Details</ActionLabel>
+            </ContextMenuItem>
+          </ContextMenu>
+        </TableCell>
       </TableRow>
     )
   }
 }
+
+const ActionLabel = styled.span`
+  margin-left: 15px;
+`
 
 export default CampaignRow

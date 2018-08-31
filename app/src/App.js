@@ -25,6 +25,7 @@ class App extends React.Component {
       etherscanBaseUrl: 'https://rinkeby.etherscan.io',
       name: 'rinkeby',
     },
+    //campaigns: [{"id":"1","executed":false,"endDate":1535632259000,"title":"Private Sale","ethRaised":"0","creator":"0x27e2d82314e577dce5f257DcaA419168661104F9","target":"100","cap":"1000","tokenPrice":"0","availableTokens":"0","campaignAddress":"0x49635842E9d4C05FD182FE8DEA2cAB7FcdaB4b70"}]
     campaigns: []
   };
   static childContextTypes = {
@@ -62,8 +63,16 @@ class App extends React.Component {
 
   handleNewRaise = ({ title, endDate, tokenPrice, target, cap  }) => {
     const { app } = this.props;
-    //FIXME: add endDate
-    app.createCampaign(title, Date.now() / 1000 + 3600, tokenPrice, target, cap);
+
+    //FIXME: add
+    app.createCampaign(
+      title,
+      Date.now() / 1000 + 3600,
+      Math.floor(tokenPrice * 100000000),
+      Math.floor(target     * 100000000),
+      Math.floor(cap        * 100000000),
+    );
+
     this.handleSidepanelClose()
   };
 

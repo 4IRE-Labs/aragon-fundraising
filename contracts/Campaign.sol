@@ -24,6 +24,10 @@ contract Campaign {
     uint256 public availableTokens;
     uint256 public campaignId;
 
+    event EthRaised(
+        uint256 indexed campaignId
+    );
+
     function Campaign(MiniMeToken _token, string _title, uint64 _endDate, uint256 _tokenPrice, uint256 _target, uint256 _cap, uint256 _campaignId){
         token       = _token;
         creator     = msg.sender;
@@ -33,5 +37,11 @@ contract Campaign {
         target      = _target;
         cap         = _cap;
         campaignId  = _campaignId;
+    }
+
+    function() public payable {
+        uint256 weiAmount = msg.value;
+        ethRaised = ethRaised.add(weiAmount);
+        EthRaised(campaignId);
     }
 }

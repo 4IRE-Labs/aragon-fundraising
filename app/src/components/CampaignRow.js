@@ -50,7 +50,7 @@ class CampaignRow extends React.Component {
           <Text>{minEth} ETH</Text>
         </TableCell>
         <TableCell>
-          <Text>{tokenPrice}</Text>
+          <Text>{tokenPrice} ETH</Text>
         </TableCell>
         <TableCell>
           <Text>{availableTokens}</Text>

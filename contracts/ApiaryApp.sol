@@ -36,6 +36,15 @@ contract ApiaryApp is AragonApp {
         campaigns.length ++;
     }
 
+    /**
+     * @notice Create new fundrising campaign: `_value`
+     * @param _title Title of new campaign
+     * @param _endDate Date when camaign will be finished
+     * @param _tokenPrice Token / ETH exchange rate
+     * @param _target Amount of ETH needed to be raised
+     * @param _cap Maximum amount of ETH to be raised
+     */
+
     function createCampaign(string _title, uint64 _endDate, uint256 _tokenPrice, uint256 _target, uint256 _cap) auth(CREATE_CAMPAIGN) external returns (uint256 campaignId) {
         require(_endDate > now);
 

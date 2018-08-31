@@ -3,6 +3,7 @@ import { Button, Field, SafeLink, SidePanelSplit, Text, theme, Countdown } from 
 import styled from "styled-components";
 import PropTypes from 'prop-types'
 import provideNetwork from '../../utils/provideNetwork'
+import ProgressBar from "../ProgressBar";
 
 class CampaignPanelContent extends React.Component {
 
@@ -31,6 +32,8 @@ class CampaignPanelContent extends React.Component {
         campaignAddress
     } = campaign;
 
+    const progress = (ethRaised / target); //0.5
+
     return (
       <div>
         <SidePanelSplit>
@@ -44,14 +47,17 @@ class CampaignPanelContent extends React.Component {
             <h2>
               <Label>Token Price:</Label>
             </h2>
-            <div>{tokenPrice}</div>
+            <div>{tokenPrice} ETH</div>
           </div>
         </SidePanelSplit>
         <div>
-          <h2>
-            <Label>Name:</Label>
-          </h2>
-          <div>{title}</div>
+          <Part>
+            <h2>
+              <Label>Name:</Label>
+            </h2>
+            <div>{title}</div>
+            <ProgressBar progress={progress} minValue={`0 ETH`} maxValue={`${target} ETH`}/>
+          </Part>
         </div>
         <SidePanelSplit>
           <div>
@@ -82,19 +88,21 @@ class CampaignPanelContent extends React.Component {
           </div>
         </SidePanelSplit>
         <div>
-          <h2>
-            <Label>Address:</Label>
-          </h2>
-          <div>
-              <p>
-                <SafeLink
-                  href={`${etherscanBaseUrl}/address/${campaignAddress}`}
-                  target="_blank"
-                >
-                  {campaignAddress}
-                </SafeLink>
-            </p>
-          </div>
+          <Part>
+            <h2>
+              <Label>Address:</Label>
+            </h2>
+            <div>
+                <p>
+                  <SafeLink
+                    href={`${etherscanBaseUrl}/address/${campaignAddress}`}
+                    target="_blank"
+                  >
+                    {campaignAddress}
+                  </SafeLink>
+              </p>
+            </div>
+          </Part>
         </div>
       </div>
     );
@@ -107,6 +115,16 @@ const Label = styled(Text).attrs({
 })`
   display: block;
   margin-bottom: 10px;
+`;
+
+const Part = styled.div`
+  padding: 20px 0;
+  h2 {
+    margin-top: 20px;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
 `;
 
 
